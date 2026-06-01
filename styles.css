@@ -1,0 +1,752 @@
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #172033;
+  --muted: #7a8499;
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --border: #e5eaf3;
+  --today: #fff1d6;
+  --weekend: #fff7f7;
+  --shadow: 0 18px 45px rgba(23, 32, 51, 0.12);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 160ms;
+  --duration-normal: 260ms;
+  --duration-slow: 420ms;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.24), transparent 36%),
+    linear-gradient(135deg, #f9fbff 0%, var(--bg) 100%);
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.calendar-card {
+  width: min(980px, 100%);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  padding: 28px;
+  animation: cardEnter var(--duration-slow) var(--ease-out) both;
+  will-change: transform, opacity;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.title-wrap {
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(28px, 5vw, 48px);
+  letter-spacing: 0.04em;
+}
+
+.today-text {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.nav-btn,
+.action-btn {
+  border: none;
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-smooth),
+    background var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease,
+    filter var(--duration-fast) ease;
+  will-change: transform;
+}
+
+.nav-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  font-size: 42px;
+  line-height: 1;
+  color: #fff;
+  background: var(--primary);
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.28);
+}
+
+.nav-btn:hover,
+.action-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.03);
+}
+
+.nav-btn:active,
+.action-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.toolbar {
+  margin: 24px 0 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 11px 18px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--primary-dark);
+  font-weight: 700;
+}
+
+.month-picker {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.month-picker input {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 9px 11px;
+  color: var(--text);
+  background: #fff;
+}
+
+.marker-panel {
+  margin: 0 0 18px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(248, 250, 252, 0.86);
+  animation: fadeUp 520ms var(--ease-out) 80ms both;
+}
+
+.marker-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.marker-head h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.marker-head p {
+  margin: 5px 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.reset-btn {
+  flex: 0 0 auto;
+  border: 1px solid #fecaca;
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: #dc2626;
+  background: #fff1f2;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.reset-btn:active {
+  transform: scale(0.98);
+}
+
+.marker-form {
+  display: grid;
+  grid-template-columns: 1.1fr 0.8fr 0.8fr minmax(220px, 2fr) auto auto;
+  gap: 10px;
+  align-items: start;
+}
+
+.marker-form input[type="text"],
+.marker-form select {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 11px;
+  color: var(--text);
+  background: #fff;
+  transition:
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease,
+    transform var(--duration-fast) var(--ease-smooth);
+}
+
+.marker-form input[type="text"]:focus,
+.marker-form select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+}
+
+.marker-month[hidden] {
+  display: none;
+}
+
+.marker-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  max-height: 132px;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.marker-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 9px;
+  border: 1px solid #dbe4f0;
+  border-radius: 999px;
+  color: var(--text);
+  background: #f8fafc;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform var(--duration-fast) var(--ease-smooth),
+    color var(--duration-fast) ease,
+    background var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+.marker-option:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.12);
+}
+
+.marker-option:has(input:checked) {
+  color: #fff;
+  border-color: var(--primary-dark);
+  background: var(--primary-dark);
+}
+
+.marker-option input {
+  accent-color: var(--primary-dark);
+}
+
+.marker-bulk-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.marker-bulk-actions button {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--primary-dark);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-smooth),
+    background var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+.marker-bulk-actions button:hover {
+  transform: translateY(-1px);
+  background: #eff6ff;
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.12);
+}
+
+.marker-form input[type="color"] {
+  width: 46px;
+  height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  background: #fff;
+}
+
+.marker-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.marker-empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.marker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 13px;
+  animation: chipIn 260ms var(--ease-out) both;
+  transition:
+    transform var(--duration-fast) var(--ease-smooth),
+    box-shadow var(--duration-fast) ease;
+}
+
+.marker-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(23, 32, 51, 0.08);
+}
+
+.marker-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.marker-item small {
+  color: var(--muted);
+}
+
+.marker-item button {
+  border: none;
+  border-radius: 999px;
+  padding: 4px 8px;
+  color: #ef4444;
+  background: #fee2e2;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekdays {
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-weight: 800;
+  text-align: center;
+}
+
+.weekdays span {
+  padding: 10px 0;
+}
+
+.calendar-grid {
+  gap: 10px;
+}
+
+.day {
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--card);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+  animation: dayEnter 360ms var(--ease-out) both;
+  transition:
+    transform var(--duration-normal) var(--ease-smooth),
+    box-shadow var(--duration-normal) ease,
+    border-color var(--duration-normal) ease,
+    background var(--duration-normal) ease,
+    color var(--duration-normal) ease;
+  will-change: transform;
+}
+
+.day::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), transparent 62%);
+  pointer-events: none;
+}
+
+.day:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(23, 32, 51, 0.12);
+}
+
+.day-number {
+  position: relative;
+  z-index: 1;
+  font-size: 24px;
+}
+
+.day.other-month {
+  color: #bac2d0;
+  background: #f8fafc;
+}
+
+.day.custom-marked:not(.other-month) {
+  color: #fff;
+  border-color: var(--marker-color);
+  background: var(--marker-color);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--marker-color) 28%, transparent);
+}
+
+.day.custom-marked.other-month {
+  color: #fff;
+  border-color: color-mix(in srgb, var(--marker-color) 55%, #e5eaf3);
+  background: color-mix(in srgb, var(--marker-color) 45%, #f8fafc);
+}
+
+.day.today {
+  border-color: #f59e0b;
+  background: var(--today);
+  color: #92400e;
+  box-shadow: inset 0 0 0 2px rgba(245, 158, 11, 0.25);
+}
+
+.day.custom-marked.today {
+  border-color: #f59e0b;
+  box-shadow: inset 0 0 0 2px rgba(245, 158, 11, 0.65), 0 10px 22px color-mix(in srgb, var(--marker-color) 28%, transparent);
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 99;
+}
+.modal.show {
+  display: flex;
+}
+
+.modal.show .modal-backdrop {
+  animation: backdropIn var(--duration-normal) ease both;
+}
+
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.42);
+  backdrop-filter: blur(6px);
+}
+
+.detail-card {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: min(720px, 88vh);
+  overflow: auto;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.28);
+  padding: 28px;
+  animation: popIn var(--duration-normal) var(--ease-out) both;
+  will-change: transform, opacity;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  color: #475569;
+  background: #f1f5f9;
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+  transition:
+    transform var(--duration-fast) var(--ease-smooth),
+    background var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+}
+
+.close-btn:hover {
+  transform: rotate(8deg) scale(1.05);
+  color: #0f172a;
+  background: #e2e8f0;
+}
+
+.close-btn:active {
+  transform: scale(0.94);
+}
+
+.detail-badge {
+  display: inline-flex;
+  margin: 0 0 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: #1d4ed8;
+  background: #dbeafe;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.detail-card h2 {
+  margin: 0;
+  font-size: clamp(28px, 6vw, 42px);
+}
+
+.detail-meta {
+  margin-top: 8px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.tag {
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #0f766e;
+  background: #ccfbf1;
+  font-size: 13px;
+  font-weight: 800;
+  animation: chipIn 260ms var(--ease-out) both;
+  transition:
+    transform var(--duration-fast) var(--ease-smooth),
+    filter var(--duration-fast) ease;
+}
+
+.tag:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+
+.detail-section h3 {
+  margin: 0 0 12px;
+}
+
+.detail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.detail-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #f8fafc;
+  animation: fadeUp 320ms var(--ease-out) both;
+  transition:
+    transform var(--duration-fast) var(--ease-smooth),
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+.detail-list li:hover {
+  transform: translateY(-1px);
+  border-color: #d5e2f2;
+  box-shadow: 0 8px 18px rgba(23, 32, 51, 0.07);
+}
+
+.detail-list strong {
+  white-space: nowrap;
+}
+
+.detail-list span {
+  color: #475569;
+  text-align: right;
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes chipIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dayEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding: 10px;
+    align-items: flex-start;
+  }
+
+  .calendar-card {
+    border-radius: 20px;
+    padding: 18px;
+  }
+
+  .marker-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .marker-form input[type="text"],
+  .marker-month,
+  .marker-options,
+  .marker-bulk-actions,
+  .marker-form .action-btn {
+    grid-column: 1 / -1;
+  }
+
+  .marker-bulk-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .marker-bulk-actions button {
+    flex: 1;
+  }
+
+  .marker-form input[type="color"] {
+    width: 100%;
+  }
+
+  .nav-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 34px;
+  }
+
+  .calendar-grid {
+    gap: 6px;
+  }
+
+  .day {
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+    border-radius: 12px;
+    padding: 6px;
+    font-size: 16px;
+  }
+
+  .day-number {
+    font-size: 18px;
+  }
+
+  .detail-card {
+    padding: 22px;
+    border-radius: 20px;
+  }
+
+  .detail-list li {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .detail-list span {
+    text-align: left;
+  }
+
+  /* 今天只用黄色底色表示，不在总览显示文字。 */
+}

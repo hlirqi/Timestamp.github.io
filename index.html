@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>月历</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="calendar-card">
+      <header class="calendar-header">
+        <button id="prevMonth" class="nav-btn" aria-label="上个月">‹</button>
+        <div class="title-wrap">
+          <h1 id="monthTitle">月历</h1>
+          <p id="todayText" class="today-text"></p>
+        </div>
+        <button id="nextMonth" class="nav-btn" aria-label="下个月">›</button>
+      </header>
+
+      <div class="toolbar">
+        <button id="todayBtn" class="action-btn">回到今天</button>
+        <label class="month-picker">
+          跳转：
+          <input id="monthInput" type="month" />
+        </label>
+      </div>
+
+      <section class="marker-panel" aria-label="自定义日期标记">
+        <div class="marker-head">
+          <div>
+            <h2>自定义标记</h2>
+            <p>按星期、每月几号或指定月份日期标记颜色，规则会自动保存。</p>
+          </div>
+          <button id="resetMarkers" class="reset-btn" type="button">重置标记</button>
+        </div>
+        <form id="markerForm" class="marker-form">
+          <input id="markerName" type="text" placeholder="名称，如 休息 / 重要" maxlength="12" />
+          <select id="markerType" aria-label="标记类型">
+            <option value="weekday">按星期</option>
+            <option value="day">按几号</option>
+            <option value="monthDay">按月份日期</option>
+          </select>
+          <select id="markerMonth" class="marker-month" aria-label="标记月份"></select>
+          <div id="markerValue" class="marker-options" aria-label="标记条件"></div>
+          <div class="marker-bulk-actions">
+            <button id="selectAllMarkers" type="button">全选</button>
+            <button id="invertMarkers" type="button">反选</button>
+            <button id="clearMarkers" type="button">清空</button>
+          </div>
+          <input id="markerColor" type="color" value="#3b82f6" aria-label="标记颜色" />
+          <button class="action-btn" type="submit">批量添加</button>
+        </form>
+        <div id="markerList" class="marker-list"></div>
+      </section>
+
+      <div class="weekdays" aria-hidden="true">
+        <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+      </div>
+
+      <section id="calendarGrid" class="calendar-grid" aria-label="月历日期"></section>
+    </section>
+  </main>
+
+  <section id="dateModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <article class="detail-card" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <button id="closeModal" class="close-btn" aria-label="关闭详情">×</button>
+      <p id="detailBadge" class="detail-badge">日期详情</p>
+      <h2 id="detailTitle">日期详情</h2>
+      <div id="detailMeta" class="detail-meta"></div>
+      <div id="detailTags" class="detail-tags"></div>
+      <div class="detail-section">
+        <h3>日期信息</h3>
+        <ul id="detailList" class="detail-list"></ul>
+      </div>
+    </article>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
